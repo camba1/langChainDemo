@@ -5,7 +5,7 @@ from pirate_speak.chain import chain as pirateChain
 from .myChain import chain as simple_chain
 from .rag import build_chain
 from .agent import build_agent
-from .multiChain import chain_with_fallback
+from .multiChain import chain_with_fallback, routable_chain
 
 app = FastAPI()
 
@@ -20,7 +20,7 @@ add_routes(app, simple_chain, path="/simple")
 add_routes(app, build_chain(), path="/rag")
 add_routes(app, build_agent(), path="/agent")
 add_routes(app, chain_with_fallback(), path="/multichain")
-# add_routes(app, pirateChain, path="/pirate")
+add_routes(app, routable_chain(), path="/route")
 
 # Showing the endpoint and feedback require setting up langsmith access
 add_routes(app,
