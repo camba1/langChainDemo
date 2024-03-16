@@ -6,7 +6,7 @@ from .myChain import chain as simple_chain
 from .rag import build_chain
 from .agent import build_agent
 from .multiChain import chain_with_fallback, routable_chain
-
+from .openRouter import chain as openrouter_chain
 app = FastAPI()
 
 
@@ -17,10 +17,12 @@ async def redirect_root_to_docs():
 
 # Edit this to add the chain you want to add
 add_routes(app, simple_chain, path="/simple")
+add_routes(app, openrouter_chain, path="/openrouter")
 add_routes(app, build_chain(), path="/rag")
 add_routes(app, build_agent(), path="/agent")
 add_routes(app, chain_with_fallback(), path="/multichain")
 add_routes(app, routable_chain(), path="/route")
+
 
 # Showing the endpoint and feedback require setting up langsmith access
 add_routes(app,
