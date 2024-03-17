@@ -13,7 +13,7 @@ MODEL_NAME = "nousresearch/nous-hermes-2-mixtral-8x7b-dpo"
 # MODEL_NAME = "openrouter/auto"
 MODEL_TEMPERATURE = 0.8
 openrouter_api_key=getenv("OPENROUTER_API_KEY")
-print(openrouter_api_key)
+
 
 model = ChatOpenAI(temperature=MODEL_TEMPERATURE,
                    model=MODEL_NAME,
