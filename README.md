@@ -34,13 +34,13 @@ Install the LangChain CLI if you haven't yet
 pip install -U langchain-cli
 ```
 
-Install Poetry and all the dependencies
+Install Poetry following the instructions [here](https://python-poetry.org/docs/#installing-with-the-official-installer).
+Install all the dependencies and activate your environment
 
 
 ```bash
 poetry install
 poetry shell
-poetry install
 ```
 
 ## Set the environment variables
