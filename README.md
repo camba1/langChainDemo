@@ -1,6 +1,6 @@
 # LangChainDemo
 This repository shows a number of LangChain examples that can be run using langserve.  The sister repository 
-LangChain Demo Client includes simple client examples that can be used to call this application.
+[LangChain Demo Client](https://github.com/camba1/langchainDemoClient ) includes simple client examples that can be used to call this application.
 ### Simple Chains
 
 ![SimpleChain.png](doc%2Fimages%2FSimpleChain.png)
