@@ -3,7 +3,7 @@ This repository shows a number of LangChain examples that can be run using langs
 [LangChain Demo Client](https://github.com/camba1/langchainDemoClient ) includes simple client examples that can be used to call this application.
 ### Simple Chains
 
-![SimpleChain.png](doc%2Fimages%2FSimpleChain.png)
+![myChain_Simple.png](doc%2Fimages%2FmyChain_Simple.png)
 ![OpenRouter.png](doc%2Fimages%2FOpenRouter.png)
 
 ### Naive RAG
@@ -13,9 +13,10 @@ This repository shows a number of LangChain examples that can be run using langs
 
 ### Other
 
-![FallbackChain.png](doc%2Fimages%2FFallbackChain.png)
-![AgentExecutor.png](doc%2Fimages%2FAgentExecutor.png)
-![routableChain.png](doc%2Fimages%2FroutableChain.png)
+![multichain_fallback.png](doc%2Fimages%2Fmultichain_fallback.png)
+![agent.png](doc%2Fimages%2Fagent.png)
+![multiChain_routable.png](doc%2Fimages%2FmultiChain_routable.png)
+
 
 ## Repository organization
 
