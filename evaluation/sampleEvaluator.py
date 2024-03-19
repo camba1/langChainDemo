@@ -49,7 +49,7 @@ chain_results = client.run_on_dataset(
     dataset_name="Movie Characters",
     llm_or_chain_factory=chain,
     evaluation=eval_config,
-    project_name="Fourth-Run",
+    project_name="Sixth-Run",
     concurrency_level=5,
     verbose=True,
 )
