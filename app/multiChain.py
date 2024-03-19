@@ -8,7 +8,6 @@ from langchain_core.runnables import RunnableLambda
 from langchain_core.runnables import RunnableSerializable
 from langchain.pydantic_v1 import BaseModel
 
-
 # Model constants
 MODEL_NAME = "gpt-3.5-turbo"
 INVENTIVE_MODEL_TEMPERATURE = 0.8
@@ -57,7 +56,7 @@ def chain_with_fallback():
 # print(result)
 
 
-def create_chain(prompt_text:str, model_temperature, model_name) -> RunnableSerializable:
+def create_chain(prompt_text: str, model_temperature, model_name) -> RunnableSerializable:
     """
     Create a new chain object
     :param prompt_text: Text that will e used as part of the prompt sent to llm
@@ -77,7 +76,6 @@ class QuestionInput(BaseModel):
 
 
 def routable_chain():
-
     # Initial chain
     classify_prompt_text = """You are an expert in science fiction movies. In particular you are well verse in the
     movies from 'Star Trek' and 'Star Wars'. Classify if the user question below refers to 'Star Trek', 'Star Wars' 
@@ -116,13 +114,13 @@ def routable_chain():
     general_chain = create_chain(general_prompt_text, MODEL_TEMPERATURE, MODEL_NAME)
 
     # Final Chain (Composite of all other chains)
-    route = lambda x : startrek_chain if "star trek" in x["topic"].lower() \
-        else (starwars_chain if "star wars" in x["topic"].lower() else general_chain)
+    route = lambda x: startrek_chain if "star trek" in x["topic"].lower() \
+                    else (starwars_chain if "star wars" in x["topic"].lower()
+                    else general_chain)
 
-    final_chain = {"topic": classification_chain, "question": lambda x : x["question"]} | RunnableLambda(route)
+    final_chain = {"topic": classification_chain, "question": lambda x: x["question"]} | RunnableLambda(route)
 
     return final_chain.with_types(input_type=QuestionInput)
-
 
 # result = routable_chain().invoke({"question": "Who is Hans Solo?"})
 # print(result)
