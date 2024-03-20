@@ -34,6 +34,9 @@ export LANGCHAIN_API_KEY=<YOUR LANGCHAIN_API_KEY>
 export LANGCHAIN_PROJECT="Test Project"    
 langchain app serve  
 ```
+The application will be launched at http://127.0.0.1:8000 and you can visit 
+[langsmith](https://smith.langchain.com) to see traces/metrics from running the application
+
 
 To get the API keys needed, visit:
 - OpenAI: https://openai.com
