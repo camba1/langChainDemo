@@ -20,7 +20,8 @@ this application using:
 
 ## Quick start
 
-To get the application going quickly:
+To get the application going quickly, assuming you already have the Langchain-cli 
+(`pip install -U langchain-cli`) and [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer) installed:
 
 ```shell
 git clone https://github.com/camba1/langChainDemo.git
