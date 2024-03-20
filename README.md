@@ -1,6 +1,17 @@
 # LangChainDemo
-This repository shows a number of LangChain examples that can be run using langserve.  The sister repository 
-[LangChain Demo Client](https://github.com/camba1/langchainDemoClient ) includes simple client examples that can be used to call this application.
+
+This repository shows a number of AI powered LangChain examples. The repo was used to present a talk at AICamp. It uses:
+
+- **LangServe** to create and serve the application inference endpoints
+- **Langchain** to interact with the LLM models and build the application logic.
+- The examples use OpenAI GPT 3.5 Turbo, GPT 4 as well as Nous Hermes 2 Mixtral 8x7B MoE (via [OpenRouter](https://openrouter.ai/docs#quick-start))
+- **LangSmith** integration for observability metrics and evaluation. See the section on Langsmith for details 
+on how to enable sending data to Langsmith
+
+The sister repository [LangChain Demo Client](https://github.com/camba1/langchainDemoClient ) includes simple client examples that can be used to call 
+this application using [Gradio](https://www.gradio.app), [Streamlit](https://streamlit.io), 
+[Chainlit](https://chainlit.io) and plain Python package remote calls.
+
 ### Simple Chains
 
 ![myChain_Simple.png](doc%2Fimages%2FmyChain_Simple.png)
@@ -9,12 +20,15 @@ This repository shows a number of LangChain examples that can be run using langs
 ### Naive RAG
 
 ![ragChain_1.png](doc%2Fimages%2FragChain_1.png)
+
 ![ragChain_2.png](doc%2Fimages%2FragChain_2.png)
 
 ### Other
 
 ![multichain_fallback.png](doc%2Fimages%2Fmultichain_fallback.png)
+
 ![agent.png](doc%2Fimages%2Fagent.png)
+
 ![multiChain_routable.png](doc%2Fimages%2FmultiChain_routable.png)
 
 
@@ -25,7 +39,7 @@ The repo is organized as follows:
 - **doc/images**: Images included in this document
 - **Evaluation**: Sample evaluation script. Note that you will need to modify the model name and dataset name as well 
 as providing you our OpenRouter API key to use this example.
-- **Packages**: External packages installed from the Langchain templates repo
+- **Packages**: External packages installed from the [Langchain templates repo](https://templates.langchain.com/)
 
 ## Installation
 
@@ -81,8 +95,9 @@ langchain app remove my/custom/path/rag
 
 ## Setup LangSmith (Optional)
 LangSmith will help us trace, monitor and debug LangChain applications. 
-LangSmith is currently in private beta, you can sign up [here](https://smith.langchain.com/). 
-If you don't have access, you can skip this section
+You can sign up for a free Langsmith account [here](https://smith.langchain.com/). 
+If you don't have access, you can skip this section, but you will be missing out on some pretty 
+amazing stuff :) 
 
 
 ```shell
@@ -94,7 +109,7 @@ export LANGCHAIN_PROJECT=<your-project>  # if not specified, defaults to "defaul
 ## Launch the application using LangServe locally
 
 ```bash
-langchain serve
+langchain app serve
 ```
 
 ## Running the application using LangServe in Docker
