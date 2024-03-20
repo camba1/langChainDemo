@@ -4,7 +4,9 @@ This repository shows a number of AI powered LangChain application examples.
 The repo was used to present a talk at AICamp. It uses:
 
 - **LangServe** to create and serve the application inference endpoints
+- **LangChain Templates** to pull pre-existing application templates
 - **Langchain** to interact with the LLM models and build the application logic.
+- **LangChain Hub** to pull pre-existing LLM prompts
 - **OpenAI GPT 3.5 Turbo**, **GPT 4** as well as **Nous Hermes 2 Mixtral 8x7B MoE** (via [OpenRouter](https://openrouter.ai/docs#quick-start))
 - **LangSmith** integration for observability, tracing, metrics and evaluation. See the section on Langsmith for details 
 on how to enable sending data to Langsmith
