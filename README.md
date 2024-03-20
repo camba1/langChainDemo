@@ -115,7 +115,7 @@ langchain app remove my/custom/path/rag
 LangSmith will help us trace, monitor and debug LangChain applications. 
 You can sign up for a free Langsmith account [here](https://smith.langchain.com/). 
 If you don't have access, you can skip this section, but you will be missing out on some pretty 
-amazing stuff :) 
+cool stuff :) 
 
 
 ```shell
@@ -123,6 +123,8 @@ export LANGCHAIN_TRACING_V2=true
 export LANGCHAIN_API_KEY=<your-api-key>
 export LANGCHAIN_PROJECT=<your-project>  # if not specified, defaults to "default"
 ```
+
+![langSmith.png](doc%2Fimages%2FlangSmith.png)
 
 ## Launch the application using LangServe locally
 
