@@ -1,16 +1,22 @@
 # LangChainDemo
 
-This repository shows a number of AI powered LangChain examples. The repo was used to present a talk at AICamp. It uses:
+This repository shows a number of AI powered LangChain application examples. 
+The repo was used to present a talk at AICamp. It uses:
 
 - **LangServe** to create and serve the application inference endpoints
 - **Langchain** to interact with the LLM models and build the application logic.
-- The examples use OpenAI GPT 3.5 Turbo, GPT 4 as well as Nous Hermes 2 Mixtral 8x7B MoE (via [OpenRouter](https://openrouter.ai/docs#quick-start))
-- **LangSmith** integration for observability metrics and evaluation. See the section on Langsmith for details 
+- **OpenAI GPT 3.5 Turbo**, **GPT 4** as well as **Nous Hermes 2 Mixtral 8x7B MoE** (via [OpenRouter](https://openrouter.ai/docs#quick-start))
+- **LangSmith** integration for observability, tracing, metrics and evaluation. See the section on Langsmith for details 
 on how to enable sending data to Langsmith
 
 The sister repository [LangChain Demo Client](https://github.com/camba1/langchainDemoClient ) includes simple client examples that can be used to call 
-this application using [Gradio](https://www.gradio.app), [Streamlit](https://streamlit.io), 
-[Chainlit](https://chainlit.io) and plain Python package remote calls.
+this application using: 
+- [Gradio](https://www.gradio.app)
+- [Streamlit](https://streamlit.io)
+- [Chainlit](https://chainlit.io)
+- Simple Python package remote calls.
+
+## Diagrams of the different chains used in the application
 
 ### Simple Chains
 
@@ -45,9 +51,13 @@ The repo is organized as follows:
   - **rag.py**: Create a simple RAG chain to query the document in the app/data directory
   - **server.py**: Main code to run the FastAPI webServer. Contains all the different application routes
 - **doc/images**: Images included in this document
-- **Evaluation**: Sample evaluation script. Note that you will need to modify the model name and dataset name as well 
-as providing you our OpenRouter API key to use this example.
-- **Packages**: External packages installed from the [Langchain templates repo](https://templates.langchain.com/)
+- **Evaluation**: Sample model evaluation script. Script runs a model 5 times and checks the responses for 
+relevance and insensitivity
+- **Packages**: External packages installed from the [Langchain templates repo](https://templates.langchain.com/). 
+In this case we have installed and used the **pirate speak** template. We also configured the WebServer endpoint for
+this example to use the new **Playground** interface that also allows the end user to provide feedback and to link to the 
+**LangSmith** trace of the run. Note, that for these additional buttons to show up in the screen LangSmith must be
+enabled for the project (See Langsmith section below)
 
 ## Installation
 
@@ -120,6 +130,15 @@ export LANGCHAIN_PROJECT=<your-project>  # if not specified, defaults to "defaul
 langchain app serve
 ```
 
+This command will launch the web server running at http://127.0.0.1:8000. The server enables the following endpoints:
+- **/** : Root of the application. It gets automatically redirected to /docs
+- **/docs**: Display the auto-generated Open API (Swagger) documentation for the application
+- **/{example route name}/playground**: Provides access to the playground testing interface for the different example.
+For example, '/simple/playground' will open the playground for the simple OpenAI chain. See the app/server.py for
+the list of routes available.
+
+![routes.png](doc%2Fimages%2Froutes.png)
+
 ## Run the model evaluation sample script
 
 To run the sample model evaluation script (evaluation/sampleEvaluator.py), please make sure that:
@@ -145,6 +164,14 @@ Modified:
 ```python
 model = ChatOpenAI(temperature=MODEL_TEMPERATURE)
 ```
+
+To run the evaluation script, run the following command:
+
+```shell
+python evaluation/sampleEvaluator.py
+```
+
+Results from the evaluation will display in the terminal, but are also visible in **LangSmith**
 
 ## Running the application using LangServe in Docker
 
