@@ -18,6 +18,33 @@ this application using:
 - [Chainlit](https://chainlit.io)
 - Simple Python package remote calls.
 
+## Quick start
+
+To get the application going quickly:
+
+```shell
+git clone https://github.com/camba1/langChainDemo.git
+cd langChainDemo
+poetry install
+poetry shell
+export OPENAI_API_KEY=<YOUR OPENAI_API_KEY>
+export OPENROUTER_API_KEY=<YOUR OPENROUTER_API_KEY> 
+export LANGCHAIN_TRACING_V2=true
+export LANGCHAIN_API_KEY=<YOUR LANGCHAIN_API_KEY>
+export LANGCHAIN_PROJECT="Test Project"    
+langchain app serve  
+```
+
+To get the API keys needed, visit:
+- OpenAI: https://openai.com
+- OpenRouter: https://openrouter.ai
+- Langchain: https://www.langchain.com/langsmith
+
+Note that running this project as configured will call OpenAI and OpenRouter endpoints. This will have a **modest cost**,
+but it will unfortunately **not free**.
+
+Refer to the information on the rest of the document for more details on getting started with the application
+
 ## Diagrams of the different chains used in the application
 
 ### Simple Chains
@@ -88,7 +115,7 @@ export OPENAI_API_KEY=<yourOpenAiAPIkey>
 export OPENROUTER_API_KEY=<yourOpenRouterkey>
 ```
 
-## Adding additional packages
+## Adding additional packages (Optional)
 
 The repo comes with the 'pirate speak' package installed, but you can choose the add additional packages 
 following the directions below
