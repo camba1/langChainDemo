@@ -37,6 +37,13 @@ this application using [Gradio](https://www.gradio.app), [Streamlit](https://str
 
 The repo is organized as follows:
 - **app**: Contains the main application as well as most of the examples of this demo
+  - **agent.py**: Uses an agent and tools for addition, multiplication and exponentiation tools to allow LLM to perform math
+  - **multichain.py**: Contains two chains:
+    - **Chain with back**: Show how to set up a fallback chain in case there is an error in the main chain
+    - **Routable chain**: Uses a routing chain to send the user's query to the appropriate 'expert' chain
+  - **openRouter.py**: Shows how you can use LangChain with OpenRouter, which exposes a number of models using the OpenAI API
+  - **rag.py**: Create a simple RAG chain to query the document in the app/data directory
+  - **server.py**: Main code to run the FastAPI webServer. Contains all the different application routes
 - **doc/images**: Images included in this document
 - **Evaluation**: Sample evaluation script. Note that you will need to modify the model name and dataset name as well 
 as providing you our OpenRouter API key to use this example.
@@ -111,6 +118,32 @@ export LANGCHAIN_PROJECT=<your-project>  # if not specified, defaults to "defaul
 
 ```bash
 langchain app serve
+```
+
+## Run the model evaluation sample script
+
+To run the sample model evaluation script (evaluation/sampleEvaluator.py), please make sure that:
+- You have enabled lanSmith as explained above
+- You have an OpenRouter API key setup in your terminal window (`export OPENROUTER_API_KEY=<yourOpenRouterkey>`)
+- You have an OpenAI API key setup in your terminal window (`export OPENAI_API_KEY=<yourOpenAiAPIkey>`)
+
+Note that if you do not have an OpenRouter API key and want to just use openAI, you can change 
+the model definition as follows:
+
+Original:
+
+```python
+model = ChatOpenAI(temperature=MODEL_TEMPERATURE,
+                   model=MODEL_NAME,
+                   openai_api_key=openrouter_api_key,
+                   openai_api_base=OPENROUTER_API_BASE,
+                   )
+```
+
+Modified:
+
+```python
+model = ChatOpenAI(temperature=MODEL_TEMPERATURE)
 ```
 
 ## Running the application using LangServe in Docker
