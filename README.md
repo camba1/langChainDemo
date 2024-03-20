@@ -94,6 +94,8 @@ enabled for the project (See Langsmith section below)
 
 ## Installation
 
+### Prerequisites
+
 Install the LangChain CLI if you haven't yet
 
 ```bash
@@ -109,7 +111,7 @@ poetry install
 poetry shell
 ```
 
-## Set the environment variables
+### Set the environment variables
 
 Setup Environment variables to call the LLM providers. Note that the OpenRouter key is only needed in the openRouter 
 example and the sample evaluation script. So, if you are not using those examples, you do not need to set that variable.
@@ -119,7 +121,7 @@ export OPENAI_API_KEY=<yourOpenAiAPIkey>
 export OPENROUTER_API_KEY=<yourOpenRouterkey>
 ```
 
-## Adding additional packages (Optional)
+### Adding additional packages (Optional)
 
 The repo comes with the 'pirate speak' package installed, but you can choose the add additional packages 
 following the directions below
@@ -144,7 +146,7 @@ Note: you remove packages by their api path
 langchain app remove my/custom/path/rag
 ```
 
-## Setup LangSmith (Optional)
+### Setup LangSmith (Optional)
 LangSmith will help us trace, monitor and debug LangChain applications. 
 You can sign up for a free Langsmith account [here](https://smith.langchain.com/). 
 If you don't have access, you can skip this section, but you will be missing out on some pretty 
@@ -200,7 +202,7 @@ Modified:
 model = ChatOpenAI(temperature=MODEL_TEMPERATURE)
 ```
 
-To run the evaluation script, run the following command:
+To **run the evaluation** script, run the following command:
 
 ```shell
 python evaluation/sampleEvaluator.py
