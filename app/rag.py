@@ -18,8 +18,10 @@ EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2"
 MODEL_TEMPERATURE = 0
 
 # Document embedding constants
-CHUNK_SIZE = 26
-CHUNK_OVERLAP = 5
+# This has a direct  impact on what docs are used to answer the user question
+# Play with it as needed to get the appropriate data from the similarity searches
+CHUNK_SIZE = 50
+CHUNK_OVERLAP = 8
 
 #  Prompt name to the used to pull from the langChain Hub
 HUB_RAG_PROMPT = "rlm/rag-prompt"
