@@ -4,12 +4,12 @@ This repository shows a number of LangChain examples that can be run using langs
 ### Simple Chains
 
 ![myChain_Simple.png](doc%2Fimages%2FmyChain_Simple.png)
-![OpenRouter.png](doc%2Fimages%2FOpenRouter.png)
+![openRouter.png](doc%2Fimages%2FopenRouter.png)
 
 ### Naive RAG
 
-![RagChain_1.png](doc%2Fimages%2FRagChain_1.png)
-![RagChain_2.png](doc%2Fimages%2FRagChain_2.png)
+![ragChain_1.png](doc%2Fimages%2FragChain_1.png)
+![ragChain_2.png](doc%2Fimages%2FragChain_2.png)
 
 ### Other
 
