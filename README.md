@@ -15,6 +15,7 @@ this application using [Gradio](https://www.gradio.app), [Streamlit](https://str
 ### Simple Chains
 
 ![myChain_Simple.png](doc%2Fimages%2FmyChain_Simple.png)
+
 ![openRouter.png](doc%2Fimages%2FopenRouter.png)
 
 ### Naive RAG
