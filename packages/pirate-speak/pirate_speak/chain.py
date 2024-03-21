@@ -1,4 +1,4 @@
-from langchain_community.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 _prompt = ChatPromptTemplate.from_messages(

@@ -1,6 +1,6 @@
 import langsmith
-from langchain import chat_models, prompts, smith
-# from langchain.schema import output_parser
+from langchain import smith
+
 
 # -------------Model definition for model we want to evaluate --------------
 from os import getenv
@@ -49,7 +49,7 @@ chain_results = client.run_on_dataset(
     dataset_name="Movie Characters",
     llm_or_chain_factory=chain,
     evaluation=eval_config,
-    project_name="Sixth-Run",
+    project_name="Eleventh-Run",
     concurrency_level=5,
     verbose=True,
 )
