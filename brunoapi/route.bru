@@ -1,0 +1,26 @@
+meta {
+  name: route
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://127.0.0.1:8000/route/invoke
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "input": {
+      "question": "Who is captain Kirk?"
+    },
+    "config": {},
+    "kwargs": {}
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.output: contains Spock
+}

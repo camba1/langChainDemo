@@ -1,0 +1,26 @@
+meta {
+  name: agent
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://127.0.0.1:8000/agent/invoke
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "input": {
+      "input": "Take 3 to the fifth power and multiply that by the sum of twelve and three, then square the whole result"
+    },
+    "config": {},
+    "kwargs": {}
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.output: contains 164025
+}

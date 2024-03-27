@@ -1,0 +1,26 @@
+meta {
+  name: simple
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://127.0.0.1:8000/simple/invoke
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "input": {
+      "input": "Aquaman"
+    },
+    "config": {},
+    "kwargs": {}
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.output: contains Aquaman
+}

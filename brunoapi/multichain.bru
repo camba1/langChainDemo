@@ -1,0 +1,25 @@
+meta {
+  name: multichain
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://127.0.0.1:8000/multichain/invoke
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "input": {
+      "animal": "Chicken"
+    },
+    "config": {},
+    "kwargs": {}
+  }
+}
+
+assert {
+  res.status: eq 200
+}
