@@ -5,10 +5,10 @@ The repo was used to present a talk at AICamp. It uses:
 
 - **LangServe** to create and serve the application inference endpoints
 - **LangChain Templates** to pull pre-existing application templates
-- **Langchain** to interact with the LLM models and build the application logic.
+- **LangChain** to interact with the LLM models and build the application logic.
 - **LangChain Hub** to pull pre-existing LLM prompts
 - **OpenAI GPT 3.5 Turbo**, **GPT 4** as well as **Nous Hermes 2 Mixtral 8x7B MoE** (via [OpenRouter](https://openrouter.ai/docs#quick-start))
-- **LangSmith** integration for observability, tracing, metrics and evaluation. See the section on Langsmith for details 
+- **LangSmith** integration for observability, tracing, metrics and evaluation. See the section on LangSmith for details 
 on how to enable sending data to Langsmith
 
 The sister repository [LangChain Demo Client](https://github.com/camba1/langchainDemoClient ) includes simple client examples that can be used to call 
@@ -35,14 +35,14 @@ export LANGCHAIN_API_KEY=<YOUR LANGCHAIN_API_KEY>
 export LANGCHAIN_PROJECT="Test Project"    
 langchain app serve  
 ```
-The application will be launched at http://127.0.0.1:8000 and you can visit 
-[Langsmith](https://smith.langchain.com) to see traces/metrics from running the application
+The application will be launched at http://127.0.0.1:8000 , and you can visit 
+[LangSmith](https://smith.langchain.com) to see traces/metrics from running the application
 
 
 To get the API keys needed, visit:
 - OpenAI: https://openai.com
 - OpenRouter: https://openrouter.ai
-- Langchain: https://www.langchain.com/langsmith
+- LangChain: https://www.langchain.com/langsmith
 
 Note that running this project as configured will call OpenAI and OpenRouter endpoints. This will have a **modest cost**,
 but it will unfortunately **not free**.
@@ -76,6 +76,8 @@ Refer to the information on the rest of the document for more details on getting
 
 The repo is organized as follows:
 - **app**: Contains the main application as well as most of the examples of this demo
+- **brunoapi**: Holds the sample API calls and tests that can be run using [Bruno](https://www.usebruno.com). See detail in the "Run API testing collection"
+section for details.
   - **agent.py**: Uses an agent and tools for addition, multiplication and exponentiation tools to allow LLM to perform math
   - **multichain.py**: Contains two chains:
     - **Chain with back**: Show how to set up a fallback chain in case there is an error in the main chain
@@ -83,11 +85,13 @@ The repo is organized as follows:
   - **myChain**: Simple Chain that interacts OpenAI 
   - **openRouter.py**: Shows how you can use LangChain with OpenRouter, which exposes a number of models using the OpenAI API
   - **rag.py**: Create a simple RAG chain to query the document in the app/data directory
-  - **server.py**: Main code to run the FastAPI webServer. Contains all the different application routes
+  - **server.py**: Main code to run the FastAPI webServer. Contains all the different application routes. By default the
+routes are public, but simple authentication across all end points can be enabled by uncommenting the appropriate code
+section which is clearly marked in the code.
 - **doc/images**: Images included in this document
 - **Evaluation**: Sample model evaluation script. Script runs a model 5 times and checks the responses for 
 relevance and insensitivity
-- **Packages**: External packages installed from the [Langchain templates repo](https://templates.langchain.com/). 
+- **Packages**: External packages installed from the [LangChain templates repo](https://templates.langchain.com/). 
 In this case we have installed and used the **pirate speak** template. We also configured the WebServer endpoint for
 this example to use the new **Playground** interface that also allows the end user to provide feedback and to link to the 
 **LangSmith** trace of the run. Note, that for these additional buttons to show up in the screen LangSmith must be
@@ -149,7 +153,7 @@ langchain app remove my/custom/path/rag
 
 ### Setup LangSmith (Optional)
 LangSmith will help us trace, monitor and debug LangChain applications. 
-You can sign up for a free Langsmith account [here](https://smith.langchain.com/). 
+You can sign up for a free LangSmith account [here](https://smith.langchain.com/). 
 If you don't have access, you can skip this section, but you will be missing out on some pretty 
 cool stuff :) 
 
@@ -177,14 +181,42 @@ the list of routes available.
 
 ![routes.png](doc%2Fimages%2Froutes.png)
 
+### Authentication
+
+By the default the sample API endpoints can be run directly in the browser without any authentication which allows us
+to quickly start playing with the different endpoints and the playground.
+The server.py file contains simple example on how to enable authentication, but it is initially commented out.
+To try it out, uncomment the relevant code and then add the following header to the API call: x-token: secret-token.
+For example using CURL, hit the /simple/invoke API with the command below:
+
+```shell
+  curl --request POST \
+    --url http://127.0.0.1:8000/simple/invoke \
+    --header 'Accept: application/json' \
+    --header 'Content-Type: application/json' \
+    --header 'x-token: secret-token' \
+    --data '{
+    "input": {
+      "input": "Aquaman"
+    },
+    "config": {},
+    "kwargs": {}
+  }'
+```
+
 ## Run the model evaluation sample script
+
+Evaluating the answers that the LLMs provide is crucial to ensure that the end user experience is optimal. Langsmith 
+can help in this task by providing out of the box evaluation methods and enabling the creation of custom metrics.
+The project contains a sample evaluation script that shows how easy it is to set up a set of tests and record them in
+LangSmith for review. 
 
 To run the sample model evaluation script (evaluation/sampleEvaluator.py), please make sure that:
 - You have enabled lanSmith as explained above
 - You have an OpenRouter API key setup in your terminal window (`export OPENROUTER_API_KEY=<yourOpenRouterkey>`)
 - You have an OpenAI API key setup in your terminal window (`export OPENAI_API_KEY=<yourOpenAiAPIkey>`)
 
-Note that if you do not have an OpenRouter API key and want to just use openAI, you can change 
+Note that if you do not have an OpenRouter API key and want to just use OpenAI instead, you can change 
 the model definition as follows:
 
 Original:
@@ -210,6 +242,21 @@ python evaluation/sampleEvaluator.py
 ```
 
 Results from the evaluation will display in the terminal, but are also visible in **LangSmith**
+
+## Run the API testing collection
+
+Just like any other project, we should test not only the LLM replies, but also the application endpoints themselves.
+The project includes a simple Bruno API collection that case be used to test that the different APIs are up and running.
+To run the tests collection, assuming you have Bruno installed (installation instructions can be found [here](https://www.usebruno.com/downloads)):
+- Using the Bruno UI: 
+  - Open the brunoapi folder in Bruno which will automatically load the LangChainAPIDemo collection
+  - Click on the ellipsis (...) menu next to collection name
+  - Click Run
+- Using the [Bruno CLI](npm install -g @usebruno/cli):
+  - Change directory to brunoapi and run ``` bru run ```
+
+**Note**: As of this writing, Bruno CLI has a dependency on vm2 which has been deprecated. Hopefully this will be addressed in
+the near future, but keep that in mind.
 
 ## Running the application using LangServe in Docker
 
@@ -242,6 +289,10 @@ docker run -e OPENAI_API_KEY=$OPENAI_API_KEY -p 8080:8080 my-langserve-app
 ```
 ## Deploying to AWS with AWS Copilot
 
+**Note**: Before deploying the sample app, it may be a good idea to at the very least enable the simple authentication
+code in server.py. This will stop unauthorized users from (easily) running the different examples since they would be 
+hitting OpenAI & OpenRouter and thus incurring costs.
+
 install copilot if not already installed
 
 ```bash
@@ -267,7 +318,7 @@ your AWS account
 ## Useful Resources
 
 - LangSmith Docs: https://docs.smith.langchain.com/tracing
-- Langserve Application templates: https://templates.langchain.com
+- LangServe Application templates: https://templates.langchain.com
 - LangChain Hub: https://smith.langchain.com/hub
 - LangChain Python documentation: https://python.langchain.com/
 - LangChain JS documentation: https://js.langchain.com
