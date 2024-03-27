@@ -80,6 +80,7 @@ The repo is organized as follows:
   - **multichain.py**: Contains two chains:
     - **Chain with back**: Show how to set up a fallback chain in case there is an error in the main chain
     - **Routable chain**: Uses a routing chain to send the user's query to the appropriate 'expert' chain
+  - **myChain**: Simple Chain that interacts OpenAI 
   - **openRouter.py**: Shows how you can use LangChain with OpenRouter, which exposes a number of models using the OpenAI API
   - **rag.py**: Create a simple RAG chain to query the document in the app/data directory
   - **server.py**: Main code to run the FastAPI webServer. Contains all the different application routes
