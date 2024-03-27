@@ -12,9 +12,9 @@ from pirate_speak.chain import chain as pirateChain
 # Uncomment this section to enable simple auth using the contents of a 'x-token' header
 # Because we apply the security att he FastApi creation level, this applies to all paths
 # created with add_routes. Alternatively this could ba added at api path level instead.
-from typing_extensions import Annotated
-from fastapi import Depends, Header, HTTPException
 
+# from typing_extensions import Annotated
+# from fastapi import Depends, Header, HTTPException
 
 # async def verify_token(x_token: Annotated[str, Header()]) -> None:
 #     """Verify the token is valid."""
@@ -32,6 +32,7 @@ from fastapi import Depends, Header, HTTPException
 app = FastAPI()
 # -------- End No Auth ----------------
 
+
 @app.get("/")
 async def redirect_root_to_docs():
     return RedirectResponse("/docs")
@@ -45,7 +46,7 @@ add_routes(app, chain_with_fallback(), path="/multichain")
 add_routes(app, routable_chain(), path="/route")
 
 
-# Showing the endpoint and feedback require setting up langsmith access
+# Showing the endpoint and feedback require setting up LangSmith access
 add_routes(app,
            pirateChain,
            path="/pirate",
