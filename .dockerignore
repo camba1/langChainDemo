@@ -1,0 +1,6 @@
+# Exclude all files and directories starting with "." (e.g., .git, .vscode)
+.*
+
+doc
+brunoapi
+copilot
