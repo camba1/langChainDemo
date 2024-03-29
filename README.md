@@ -9,7 +9,7 @@ The repo was used to present a talk at AICamp. It uses:
 - **LangChain Hub** to pull pre-existing LLM prompts
 - **OpenAI GPT 3.5 Turbo**, **GPT 4** as well as **Nous Hermes 2 Mixtral 8x7B MoE** (via [OpenRouter](https://openrouter.ai/docs#quick-start))
 - **LangSmith** integration for observability, tracing, metrics and evaluation. See the section on LangSmith for details 
-on how to enable sending data to Langsmith
+on how to enable sending data to LangSmith
 
 The sister repository [LangChain Demo Client](https://github.com/camba1/langchainDemoClient ) includes simple client examples that can be used to call 
 this application using: 
@@ -20,7 +20,7 @@ this application using:
 
 ## Quick start
 
-To get the application going quickly, assuming you already have the Langchain-cli 
+To get the application going quickly, assuming you already have the LangChain-cli 
 (`pip install -U langchain-cli`) and [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer) installed:
 
 ```shell
@@ -85,7 +85,7 @@ section for details.
   - **myChain**: Simple Chain that interacts OpenAI 
   - **openRouter.py**: Shows how you can use LangChain with OpenRouter, which exposes a number of models using the OpenAI API
   - **rag.py**: Create a simple RAG chain to query the document in the app/data directory
-  - **server.py**: Main code to run the FastAPI webServer. Contains all the different application routes. By default the
+  - **server.py**: Main code to run the FastAPI webServer. Contains all the different application routes. By default, the
 routes are public, but simple authentication across all end points can be enabled by uncommenting the appropriate code
 section which is clearly marked in the code.
 - **doc/images**: Images included in this document
@@ -206,13 +206,13 @@ For example using CURL, hit the /simple/invoke API with the command below:
 
 ## Run the model evaluation sample script
 
-Evaluating the answers that the LLMs provide is crucial to ensure that the end user experience is optimal. Langsmith 
+Evaluating the answers that the LLMs provide is crucial to ensure that the end user experience is optimal. LangSmith 
 can help in this task by providing out of the box evaluation methods and enabling the creation of custom metrics.
 The project contains a sample evaluation script that shows how easy it is to set up a set of tests and record them in
 LangSmith for review. 
 
 To run the sample model evaluation script (evaluation/sampleEvaluator.py), please make sure that:
-- You have enabled lanSmith as explained above
+- You have enabled langSmith as explained above
 - You have an OpenRouter API key setup in your terminal window (`export OPENROUTER_API_KEY=<yourOpenRouterkey>`)
 - You have an OpenAI API key setup in your terminal window (`export OPENAI_API_KEY=<yourOpenAiAPIkey>`)
 
@@ -241,7 +241,9 @@ To **run the evaluation** script, run the following command:
 python evaluation/sampleEvaluator.py
 ```
 
-Results from the evaluation will display in the terminal, but are also visible in **LangSmith**
+Results from the evaluation will display in the terminal, but are also visible in **LangSmith**.
+Note that everytime you re-run the evaluation script, you need to change the `run_on_dataset` object to have a different
+`project_name`, otherwise LangSmith will throw an error.
 
 ## Run the API testing collection
 
@@ -275,23 +277,20 @@ note it for use in the next step.
 
 ### Running the Image Locally
 
-To run the image, you'll need to include any environment variables
-necessary for your application.
-
-In the below example, we inject the `OPENAI_API_KEY` environment
-variable with the value set in my local environment
-(`$OPENAI_API_KEY`)
-
-We also expose port 8080 with the `-p 8080:8080` option.
+To run the image, run the command below. Be sure to have the openAi and OpenRouter API keys set in your terminal.
+The application will be exposed in port **8080**.
 
 ```shell
-docker run -e OPENAI_API_KEY=$OPENAI_API_KEY -p 8080:8080 my-langserve-app
+docker run --rm -e OPENAI_API_KEY=$OPENAI_API_KEY -e OPENROUTER_API_KEY=$OPENROUTER_API_KEY -p 8080:8080 my-langserve-app
 ```
+
 ## Deploying to AWS with AWS Copilot
+
+#### Initializing the application
 
 **Note**: Before deploying the sample app, it may be a good idea to at the very least enable the simple authentication
 code in server.py. This will stop unauthorized users from (easily) running the different examples since they would be 
-hitting OpenAI & OpenRouter and thus incurring costs.
+hitting OpenAI & OpenRouter and thus incurring costs. See the authentication section in this document for details.
 
 install copilot if not already installed
 
@@ -299,11 +298,74 @@ install copilot if not already installed
 brew install aws/tap/copilot-cli
 ```
 
+Initialize copilot app and define tags. Then, create the dev environment where we will deploy the app.:
+
+```bash
+copilot app init langchain-demo --resource-tags app=langchain-demo
+copilot env init --name dev --profile default --default-config
+copilot env deploy --name dev
+```
+
+Generate the secrets to store the OpenAI and OpenRouter key in AWS. This is necessary so that the image can use them
+
+```bash
+copilot secret init --name openai --values dev=<yourOpenAiAPIKEY>
+copilot secret init --name openrouter --values dev=<yourOpenRouterAPIKEY>
+```
+
+Initialize the application:
+
+```bash
+copilot init --app langchain-demo --name langchain-demo-svc --type 'Load Balanced Web Service' --dockerfile './Dockerfile'
+```
+
+#### Updating the copilot manifest
+
+Update the copilot manifest for the service to include the secrets for our OpenAI and OpenRouter API keys .
+This file was automatically created by copilot and is located at ```copilot/langchain-demo-svc```. Add the 
+following to the file:
+
+```yaml
+secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
+  OPENAI_API_KEY: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/openai
+  OPENROUTER_API_KEY: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/openrouter
+```
+
+Update the amount of memory and cpu used by container. The default 512 MiB is not enough to run the container as it 
+throws an out of memory error in ECS Fargate.
+
+```yaml
+cpu: 512       # Number of CPU units for the task.
+memory: 1024    # Amount of memory in MiB used by the task.
+```
+
+Additionally, by default copilot will build your image as an X64 image. If you would like to build an ARM image, 
+update the following line in the manifest:
+
+```yaml
+platform: linux/x86_64  # See https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/#platform
+```
+
+to be instead:
+
+```yaml
+platform: linux/arm64  # See https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/#platform
+```
+
+Finally, update the `http` section of the document to health check against the /docs instead of / if you have enabled
+authentication as / will return an unauthorized error. Add the following line un `http`:
+
+```yaml
+  healthcheck: '/docs'
+```
+
 Deploy the application
 
 ```bash
-copilot init --app [application-name] --name [service-name] --type 'Load Balanced Web Service' --dockerfile './Dockerfile' --deploy
+copilot deploy --env dev
 ```
+
+#### Deleting and trouble shooting the deployment
 
 To remove the application from AWS, run the following command:
 
@@ -311,8 +373,11 @@ To remove the application from AWS, run the following command:
 copilot app delete
 ```
 
-Note that Copilot can sometimes leave IAM roles behind, sp please ensure that everything has been removed from 
-your AWS account
+To troubleshoot the deployment in case something goes wrong, check the logs using:
+
+```bash
+copilot svc logs -n langchain-demo-svc -e dev
+```
 
 
 ## Useful Resources
@@ -322,8 +387,9 @@ your AWS account
 - LangChain Hub: https://smith.langchain.com/hub
 - LangChain Python documentation: https://python.langchain.com/
 - LangChain JS documentation: https://js.langchain.com
-- Blog: https://blog.langchain.dev/
-- Discord: https://discord.gg/cU2adEyC7w
+- LangChain Blog: https://blog.langchain.dev/
+- LangChain Discord: https://discord.gg/cU2adEyC7w
+- AWS Copilot documentation: https://aws.github.io/copilot-cli/docs/overview/ 
 - Repo for this demo: 
   - Backend: https://github.com/camba1/langChainDemo
   - Frontend: https://github.com/camba1/langchainDemoClient 
