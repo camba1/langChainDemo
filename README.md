@@ -313,7 +313,8 @@ copilot secret init --name openai --values dev=<yourOpenAiAPIKEY>
 copilot secret init --name openrouter --values dev=<yourOpenRouterAPIKEY>
 ```
 
-Initialize the application:
+Initialize the application. When asked if you would like to deploy an environment, say no as we will need to update
+the generated manifest:
 
 ```bash
 copilot init --app langchain-demo --name langchain-demo-svc --type 'Load Balanced Web Service' --dockerfile './Dockerfile'
@@ -370,7 +371,13 @@ copilot deploy --env dev
 To remove the application from AWS, run the following command:
 
 ```bash
-copilot app delete
+copilot app delete --yes
+```
+
+To remove the secret we created, since copilot will not delete them:
+
+```bash
+aws ssm delete-parameters --names "/copilot/langchain-demo/dev/secrets/openai" "/copilot/langchain-demo/dev/secrets/openrouter" 
 ```
 
 To troubleshoot the deployment in case something goes wrong, check the logs using:
