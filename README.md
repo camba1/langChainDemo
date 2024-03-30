@@ -76,8 +76,6 @@ Refer to the information on the rest of the document for more details on getting
 
 The repo is organized as follows:
 - **app**: Contains the main application as well as most of the examples of this demo
-- **brunoapi**: Holds the sample API calls and tests that can be run using [Bruno](https://www.usebruno.com). See detail in the "Run API testing collection"
-section for details.
   - **agent.py**: Uses an agent and tools for addition, multiplication and exponentiation tools to allow LLM to perform math
   - **multichain.py**: Contains two chains:
     - **Chain with back**: Show how to set up a fallback chain in case there is an error in the main chain
@@ -88,6 +86,9 @@ section for details.
   - **server.py**: Main code to run the FastAPI webServer. Contains all the different application routes. By default, the
 routes are public, but simple authentication across all end points can be enabled by uncommenting the appropriate code
 section which is clearly marked in the code.
+- **brunoapi**: Holds the sample API calls and tests that can be run using [Bruno](https://www.usebruno.com). See detail in the "Run API testing collection"
+section for details.
+- **copilot**: Manifests to deploy the application to AWS ECS fargate using AWS Copilot
 - **doc/images**: Images included in this document
 - **Evaluation**: Sample model evaluation script. Script runs a model 5 times and checks the responses for 
 relevance and insensitivity
